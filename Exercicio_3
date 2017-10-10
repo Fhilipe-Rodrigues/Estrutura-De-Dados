@@ -1,0 +1,87 @@
+package Exe_3;
+
+/**
+ *
+ * @author FHILIPE
+ */
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.math.BigInteger;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+
+/*Classe Elemento */
+class Element {
+    private long atual;
+    private long anterior;
+    private long proximo;
+
+    public Element(String dados) {
+        StringTokenizer stringTokenizer = new StringTokenizer(dados, " ");
+        this.atual = new BigInteger(stringTokenizer.nextToken(), 16).longValue();
+        this.anterior = new BigInteger(stringTokenizer.nextToken(), 16).longValue();
+        this.proximo = new BigInteger(stringTokenizer.nextToken(), 16).longValue();
+    }
+
+    public long getAtual() {
+        return atual;
+    }
+
+    public long getAnterior() {
+        return anterior;
+    }
+
+    public long getProximo() {
+        return proximo;
+    }
+ }
+
+/* MAIN */
+class Main {
+    public static void main(String[] args) throws Exception {
+
+        BufferedReader bufferReader = new  BufferedReader(new InputStreamReader(System.in));
+
+        LinkedList<Element> Elements = new LinkedList<>();
+        LinkedList<Element> result = new LinkedList<>();
+        String str = bufferReader.readLine();
+        long l1 = 0, l2 = 0;
+        
+        while (str != null) {
+            if (str.isEmpty()) {
+                break;
+            }
+            Elements.add(new Element(str));
+            str = bufferReader.readLine();
+        }
+
+        result.add(Elements.get(0));
+
+        for (int i = 0; i < Elements.size(); i++) {
+            for (int j = 1; j < Elements.size(); j++) {
+                if (result.get(i).getProximo() == Elements.get(j).getAtual()) {
+                    result.add(Elements.get(j));
+                }
+            }
+        }
+        int j = result.size() - 1;
+        for (int i = 0; i < result.size(); i++) {
+            l1 += result.get(i).getAnterior();
+            l1 += result.get(i).getAtual();
+            l1 += result.get(i).getProximo();
+            l2 += result.get(j).getProximo();
+            l2 += result.get(j).getAtual();
+            l2 += result.get(j).getAnterior();
+            j--;
+        }
+
+        if (l1 == l2) {
+            System.out.println("sana");
+        } else {
+            System.out.println("insana");
+        }
+    }
+}
+
+
