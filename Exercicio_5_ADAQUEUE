@@ -1,0 +1,198 @@
+/**
+ *
+ * @author FHILIPE
+ */
+
+package Exe_5_Fhilipe;
+
+//Classe No
+
+import java.util.Scanner;
+
+class No<obj> {
+    obj object;
+    No prox;
+    No prev;
+    
+    //Construtor
+    public No(obj object){
+        this.object = object;
+        prox = null;
+        prev = null;
+    }
+
+    public obj getObject() {
+        return object;
+    }
+
+    public void setObject(obj object) {
+        this.object = object;
+    }
+
+    public No getProx() {
+        return prox;
+    }
+
+    public void setProx(No prox) {
+        this.prox = prox;
+    }
+
+    public No getPrev() {
+        return prev;
+    }
+
+    public void setPrev(No prev) {
+        this.prev = prev;
+    }
+}
+//Classe Adaq
+public class Adaq<obj>{
+    private No cabeca;
+    private No cauda;
+    private int tam;
+    
+    public Adaq(){
+        cabeca = null;
+        cauda = null;
+        tam = 0;
+    }
+    
+    //Metodo para o tamanho da fila
+    public int tamFila(){
+        return tam;
+    }
+    //Metodo para verificar fila vazia:
+    public boolean taVazia(){
+        if(tam == 0)
+            return true;
+        else
+            return false;
+    }
+    /* Metodos de inserção: */
+    public void insereCabeca(obj object){
+        No no = new No(object);
+        if(taVazia()){
+            cabeca = no;
+            cauda = no;
+            no.setProx(cabeca);
+            no.setPrev(cauda);
+            
+            tam++;
+        }
+        else{
+            no.setPrev(cabeca);
+            cabeca.setProx(no);
+            cabeca = no;
+            
+            tam++;
+        }             
+    }
+    public void insereCauda(obj object){
+        No no = new No(object);
+        if(taVazia()){
+            cabeca = no;
+            cauda = no;
+            no.setProx(cabeca);
+            no.setPrev(cauda);
+            
+            tam++;
+        }
+        else{
+            no.setProx(cauda);
+            cauda.setPrev(no);
+            cauda = no;
+            
+            tam++;
+        }             
+    }
+    /* metodos de remoção */
+    public obj removeCabeca(){
+        if(taVazia()){
+            return null;
+        }
+        else{
+            No aux = cabeca;
+            cabeca = aux.getPrev();
+            tam--;
+            return(obj) aux.getObject();
+        }
+    }
+    public obj removeCauda(){
+        if(taVazia()){
+            return null;
+        }
+        else{
+            No aux = cauda;
+            cauda = aux.getProx();
+            tam--;
+            return(obj) aux.getObject();
+        }
+    }
+
+    public static void main(String[] args){
+    
+        Scanner entrada = new Scanner(System.in);
+        Adaq adaq = new Adaq();
+        
+        String comando;
+        int numOperacoes;
+        
+        boolean reverter = false;
+        
+        //Lendo o número maximo de operações
+        numOperacoes = entrada.nextInt();
+        
+        for(int i = 0; i<=numOperacoes; i++){
+            comando = entrada.nextLine();
+            String[] comandos = comando.split(" ");
+            
+            switch(comandos[0]){
+                case "toFront":
+                    if(reverter){
+                        adaq.insereCauda(comandos[1]);
+                        break;
+                    }else{
+                        adaq.insereCabeca(comandos[1]);
+                        break;
+                    }
+                case "push_back":
+                    if(reverter){
+                        adaq.insereCabeca(comandos[1]);
+                        break;
+                    }else{
+                        adaq.insereCauda(comandos[1]);
+                        break;
+                    }  
+                case "back":
+                    if(adaq.taVazia()){
+                        System.out.println("No job for Ada?");
+                        break;
+                    }
+                    if(reverter){
+                        System.out.println(adaq.removeCabeca());
+                        break;
+                        
+                    }else{
+                        System.out.println(adaq.removeCauda());
+                        break;
+                    }
+                case "front":
+                    if(adaq.taVazia()){
+                        System.out.println("No job for Ada?");
+                        break;
+                    }
+                    if(reverter){
+                        System.out.println(adaq.removeCauda());
+                        break;
+                        
+                    }else{
+                        System.out.println(adaq.removeCabeca());
+                        break;
+                    }
+                case "reverse":
+                    reverter = !reverter;
+                    break;
+            }
+        }
+    }
+}
