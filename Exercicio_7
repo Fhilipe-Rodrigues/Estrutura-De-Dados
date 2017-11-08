@@ -1,0 +1,71 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Exe_7_Fhilipe;
+
+import java.util.Scanner;
+
+/**
+ *
+ * @author FHILIPE
+ */
+public class Exe7 {
+
+    public static void main(String[] args) {
+        Scanner entrada = new Scanner(System.in);
+        boolean[] contador;
+        char[] sistema;
+        int nFunc, aux, saida;
+
+        //Recebemos a quantidade funções que:
+        nFunc = Integer.parseInt(entrada.nextLine());
+
+        //Enquanto existir funções execute, decrementa no final do while:
+        while (nFunc-- > 0) {
+
+            //Recebe as operações da árvore, e se a primeira operação for 1,  imprime 0 e continua:
+            String op = entrada.nextLine();
+            if (op.equals("l")) {
+                System.out.println(0);
+                continue;
+            }
+
+            //array booleano e váriaveis para contagem:
+            contador = new boolean[op.length()];
+
+            contador[0] = true;
+            aux = 0;
+            saida = 0;
+
+            //Definindo o tamanho do array:
+            sistema = new char[op.length()];
+
+            //Convertendo toda a entrada do sistema de uma String para um char array:
+            for (int i = 0; i < op.length(); i++) {
+                sistema[i] = op.charAt(i);
+            }
+
+            //Definindo a profundidade da arvóre colocado pelo sistema: 
+            for (int i = 0; i < sistema.length; i++) {
+                if (sistema[i] == 'n') {
+                    aux++;
+                    contador[aux] = true;
+                } else {
+                    if (sistema[i] == 'l') {
+
+                        while (!contador[aux]) {
+                            aux--;
+                        }
+                        contador[aux] = false;
+                    }
+                }
+                saida = Math.max(saida, aux);
+            }
+            //Imprimindo a profundidade:
+            System.out.println(saida);
+            //Decrementado o número de funções:
+        }
+    }
+}
