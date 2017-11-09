@@ -1,0 +1,117 @@
+package Exe_6_Fhilipe;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+
+
+public class Main {
+    
+    static int preIndex = 0;
+    
+    static int check(Arvore no, int[] posOrdem, int index) {
+        if (no == null) {
+            return index;
+        }
+        index = check(no.getEsq(), posOrdem, index);
+        index = check(no.getDir(), posOrdem, index);
+        if (no.getValor() == posOrdem[index]) {
+            index++;
+        } else {
+            System.out.println("no");
+            System.exit(0);
+        }
+        return index;
+    }
+
+    static  Arvore construtor(int[] in, int[] pre, int inicio, int fim) {
+        if (inicio > fim) {
+            return null;
+        }
+        Arvore raiz = new Arvore(pre[preIndex++]);
+        if (inicio == fim) {
+            return raiz;
+        }
+        int in_index = pesq(in, inicio, fim, raiz.getValor());
+        raiz.dir = construtor(in, pre, in_index + 1, fim);
+        raiz.esq = construtor(in, pre, inicio, in_index - 1);
+
+        return raiz;
+    }
+
+    static int pesq(int arr[], int strt, int fim, int valor) {
+        int i;
+        for (i = strt; i <= fim; i++) {
+            if (arr[i] == valor) {
+                return i;
+            }
+        }
+        return i;
+    }
+}
+
+class Arvore {
+
+    int valor;
+    Arvore esq;
+    Arvore dir;
+
+    public Arvore(int valor) {
+        this.valor = valor;
+    }
+
+    public int getValor() {
+        return valor;
+    }
+
+    public void setValor(int valor) {
+        this.valor = valor;
+    }
+
+    public Arvore getEsq() {
+        return esq;
+    }
+
+    public void setEsq(Arvore esq) {
+        this.esq = esq;
+    }
+
+    public Arvore getDir() {
+        return dir;
+    }
+
+    public void setDir(Arvore dir) {
+        this.dir = dir;
+    }
+
+
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer[] sTokenizer = new StringTokenizer[3];
+
+        int n = Integer.parseInt(bReader.readLine());
+
+        int[] preOrdem = new int[n];
+        int[] posOrdem = new int[n];
+        int[] inOrdem = new int[n];
+
+        for (int i = 0; i < 3; i++) {
+            sTokenizer[i] = new StringTokenizer(bReader.readLine(), " ");
+        }
+        for (int i = 0; i < n; i++) {
+            preOrdem[i] = Integer.parseInt(sTokenizer[0].nextToken());
+            posOrdem[i] = Integer.parseInt(sTokenizer[1].nextToken());
+            inOrdem[i] = Integer.parseInt(sTokenizer[2].nextToken());
+        }
+
+        Arvore raiz = construtor(inOrdem, preOrdem, 0, posOrdem.length - 1);
+        if (inOrdem.length == check(raiz, posOrdem, 0)) {
+            System.out.println("yes");
+        } else {
+            System.out.println("no");
+        }
+    }
+}
