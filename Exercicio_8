@@ -1,0 +1,155 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Exe_8_Douglas;
+
+import java.util.Scanner;
+
+/**
+ *
+ * @author FHILIPE
+ */
+public class Exe8 {
+     public static void main(String[] args) {
+        Scanner entrada = new Scanner(System.in);
+        int linhas, val;
+        BST bst = new BST();
+   
+        linhas = Integer.parseInt(entrada.nextLine());
+        
+        if(linhas > 3000000){
+            return;
+        }
+        for(int i = 0; i < linhas; i++){
+            val = Integer.parseInt(entrada.nextLine());
+            bst.insere(val);
+            System.out.println(bst.getContador());
+        }
+        
+    }
+}
+class BST{
+    //Atributos da arvore
+    private int contador;
+    private No raiz;
+    
+    //Construtor
+    public BST(){
+                contador = 0;
+		raiz = null;
+	}
+	
+        public int getContador(){
+            return contador;
+        }
+        
+	// verifica se a arvore esta vazia
+	public boolean vazia (){
+		return (raiz == null);
+	}
+        
+        /* Realiza a busca recursivamente a partir da raiz.
+	   Retorna o endereço se encontra, senão retorna nulo */
+        private No busca(No T, int valor) {
+		if (T == null)
+			return null; 
+
+		if(T.getConteudo() == valor)
+			return T; 	
+		
+		if (valor < T.getConteudo())
+			return busca(T.getEsq(), valor);
+	    else
+			return busca(T.getDir(), valor);
+	}
+        public No busca(int valor) {          
+		if (raiz != null) 
+			return busca(raiz, valor);
+		
+		return null;
+	}
+        /* Exibe na ordem */
+        private void exibe (No T){
+		if (T != null) {
+			exibe(T.getEsq());
+			System.out.print(" " + T.getConteudo());
+			exibe(T.getDir());
+		}
+	}
+
+	public void exibe() {
+		if (raiz == null)
+			System.out.println("Arvore vazia");
+		else
+			exibe(raiz);
+	}
+        
+        /* insere e retorna se foi bem sucedido */
+        public boolean insere(int valor){
+
+		No novoNo = new No();
+		novoNo.setConteudo(valor);
+		novoNo.setEsq(null);
+		novoNo.setDir(null);
+
+		if (raiz == null){ // Arvore vazia
+	 		raiz = novoNo;
+			return true;
+		}
+
+	    // Procura a posição do novo nó
+	    No aux = raiz;
+	    	No a = null;
+	    while (aux != null) {
+	    		a = aux;
+			if (valor < aux.getConteudo()){
+                                contador++;
+				aux = aux.getEsq();
+                        }else{
+                                contador++;
+				aux = aux.getDir();
+                        }
+		}
+
+		if (valor < a.getConteudo()){
+			a.setEsq(novoNo);
+                }else{
+			a.setDir(novoNo);
+                }
+		return true;
+	}
+}
+class No {
+	private int conteudo;
+	private No esq;
+	private No dir;
+	
+	public No(){
+		esq = null;
+		dir = null;
+	}
+	
+	public int getConteudo() {
+		return conteudo;
+	}
+	public void setConteudo(int conteudo) {
+		this.conteudo = conteudo;
+	}
+	
+	public No getEsq() {
+		return esq;
+	}
+	public void setEsq(No esq) {
+		this.esq = esq;
+	}
+	
+	public No getDir() {
+		return dir;
+	}
+	
+	public void setDir(No dir) {
+		this.dir = dir;
+	}
+}
